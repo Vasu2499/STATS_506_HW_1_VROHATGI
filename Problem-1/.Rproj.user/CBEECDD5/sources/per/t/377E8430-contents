@@ -34,7 +34,7 @@ colnames(wine_df) <- wine_names
 
 ```{r}
 wine_correl = cor(wine_df) 
-pdf("Correlation_Matrix.pdf", height=10, width=10) 
+pdf("output.pdf", height=10, width=10) 
 # height and width set up the size of the cells
 
 corrplot(wine_correl, method = 'number',tl.cex = 0.9) 
