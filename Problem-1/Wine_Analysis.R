@@ -53,3 +53,12 @@ wine_df.c1
 
 subset(x = wine_df,
        subset = classID == 1)
+
+
+x <- c(8, 2, -8)
+x
+typeof(x)
+y
+y <- x[x > 3]
+typeof(y)
+sum(x + y)
