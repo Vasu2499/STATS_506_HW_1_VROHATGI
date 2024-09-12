@@ -1,0 +1,118 @@
+---
+title: "STATS 506 - HW 1 - VROHATGI"
+format: html
+editor: visual
+---
+
+## Problem -1
+
+Set the directory to the folder containing *wine.data* file(s)
+
+#### Load data & libraries
+
+```{r}
+library(corrplot)
+wine_data <- read.table("wine.data", sep = ",")
+```
+
+#### Set table headers based on `wine.names`
+
+```{r}
+wine_names <- c("classID","Alc%", "Mal_Acid", "Ash", "Alcali_Ash", "Magnesium", "Phenols", "Flavanoids", "Nonflava_Phenols", "Proanthocyanins", "Color_Intense", "Hue", "OD280/OD315_dilut_wines", "Proline")
+```
+
+#### Create data.frame()
+
+```{r}
+wine_df <- data.frame(wine_data) 
+colnames(wine_df) <- wine_names
+```
+
+#### Get correlation matrix   (save the plot in a pdf file using function pdf("name.pdf") and stop writing to the pdf file with dev.off())\*
+
+\*Reference: <https://stackoverflow.com/questions/53809507/correlation-plot-of-high-dimensional-data-looks-unreadable>
+
+```{r}
+wine_correl = cor(wine_df) 
+pdf("output.pdf", height=10, width=10) 
+# height and width set up the size of the cells
+
+corrplot(wine_correl, method = 'number',tl.cex = 0.9) 
+# tl.cex sets the size of font outside matrix, ie: size of labels
+
+dev.off()
+
+round(cor(wine_df),digits = 2)
+```
+
+------------------------------------------------------------------------
+
+#### Addressing the following questions:
+
+##### What is the correlation between alcohol content and color intensity?
+
+```{r}
+alc_color <- cor(wine_df[,2],wine_df[,11], use = "everything", method = c("pearson", "kendall","spearman"))
+
+# print formatted string
+sprintf("Correlation between Alcohol content and color intensity of wine: %f", alc_color)
+```
+
+------------------------------------------------------------------------
+
+##### Which class has the highest correlation? Which has the lowest?
+
+```{r}
+# slice the dataframe into three classes and calculate the correlation 
+# using subset() function **
+
+c1 <- subset(x = wine_df,
+       subset = classID == 1)
+c1[c("Alc%","Color_Intense")]
+
+```
+
+\*\* Reference : [Slicing Dataframes](https://bookdown.org/ndphillips/YaRrr/slicing-dataframes.html)
+
+```{r}
+alc_color1 <- cor(c1["Alc%"],c1["Color_Intense"], method = c("pearson", "kendall","spearman"))
+alc_color1
+```
+
+------------------------------------------------------------------------
+
+```{r}
+c2 <- subset(x = wine_df,
+       subset = classID == 2)
+c2[c("Alc%","Color_Intense")]
+```
+
+```{r}
+alc_color2 <- cor(c2["Alc%"],c2["Color_Intense"], method = c("pearson", "kendall","spearman"))
+alc_color2
+```
+
+------------------------------------------------------------------------
+
+```{r}
+c3 <- subset(x = wine_df,
+       subset = classID == 3)
+c3[c("Alc%","Color_Intense")]
+```
+
+```{r}
+alc_color3 <- cor(c3["Alc%"],c3["Color_Intense"], method = c("pearson", "kendall","spearman"))
+alc_color3
+```
+
+**Therefore, from the above calculations, class 1 has the highest correlation between alcohol content and color intensity of wine, at 0.408. The lowest correlation is observed in class 2 of wines.**
+
+------------------------------------------------------------------------
+
+##### What is the alcohol content of the wine with the highest color intensity?
+
+```{r}
+ 
+```
+
+##### What percentage of wines had a higher content of proanthocyanins compare to ash?
